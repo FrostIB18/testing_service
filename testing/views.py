@@ -4,10 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-
-# Create your views here.
 from django.urls import reverse
-
 from testing.forms import AnswerForm
 from testing.models import Theme, Test_single, Question, Choice, Answer, Results
 
@@ -70,13 +67,12 @@ def tests(request, theme_pk):
     theme = Theme.objects.get(pk=theme_pk)
     tests = Test_single.objects.filter(theme=theme)
 
+    #creates a dict for total number of questions for tests page (doesn't work - test_sizes.test.id doesn't work in django template)
     test_sizes = {}
     for test in tests:
         questions = Question.objects.filter(test=test)
         test_size = len(questions)
         test_sizes[test.id] = test_size
-
-    number_of_questions = len(questions)
 
     context = {
         'title':'Tests',
@@ -95,11 +91,12 @@ def questions(request, test_pk, theme_pk, page=1):
 
     paginator = Paginator(questions, 1)
     questions_paginator = paginator.page(page)
-    question = questions_paginator.object_list[0]
+    question = questions_paginator.object_list[0] #first and only question for a page
 
     choices = Choice.objects.filter(question=question)
     answers = Answer.objects.filter(user=request.user, theme=theme, test=test, question=question)
 
+    #just a list of answers id (need for displaying chosen choices and disabled send button after for submission
     answers_id = []
     for ans in answers:
         answers_id.append(ans.choice.id)
@@ -117,19 +114,23 @@ def questions(request, test_pk, theme_pk, page=1):
     }
 
     if request.method == "POST":
+
+        #creates a dicts list of current answers of user
         dicts = []
-        for el in range(len(request.POST.getlist('choice'))):
+        answers_ids = request.POST.getlist('choice') #gets ids of user answers
+        for el in range(len(answers_ids)):
             dict = request.POST.copy()
-            dict['choice'] = request.POST.getlist('choice')[el]
+            dict['choice'] = answers_ids[el]
             dicts.append(dict)
 
-        if len(request.POST.getlist('choice')) == 0:
+        #a custom form validation
+        if len(answers_ids) == 0:
             context.update({'answer': AnswerForm(), 'error':'Выберите хотя бы 1 вариант'})
             return render(request, 'testing/questions.html', context)
-        elif len(request.POST.getlist('choice')) == len(choices):
+        elif len(answers_ids) == len(choices):
             context.update({'answer': AnswerForm(), 'error': 'Выбор всех значений недопустим'})
             return render(request, 'testing/questions.html', context)
-        elif len(request.POST.getlist('choice')) > question.max_points:
+        elif len(answers_ids) > question.max_points:
             context.update({'answer': AnswerForm(), 'error': f'Выберите {int(question.max_points)} значение/я', })
             return render(request, 'testing/questions.html', context)
         else:
@@ -141,7 +142,7 @@ def questions(request, test_pk, theme_pk, page=1):
                 answer.test = test
                 answer.question = question
                 answer.save()
-        return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+        return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found')) #refreshes a page after form submission
 
     context.update({
         'answers':answers,
@@ -156,14 +157,16 @@ def results(request, theme_pk, test_pk):
     questions = Question.objects.filter(test=test)
 
     answers = Answer.objects.filter(user=user, test=test).select_related('choice').all()
-    total_points = sum(answer.choice.points for answer in answers)
-    max_points = sum(question.max_points for question in questions)
+    total_points = sum(answer.choice.points for answer in answers) #displays number of scored points for a user
+    max_points = sum(question.max_points for question in questions) #displays max points for a test
 
+    #point in percent
     total_points_percent = round(total_points/max_points*100, 2)
     if total_points_percent == 100:
         total_points_percent = int(total_points_percent)
     max_points_percent = 100
 
+    #saving results in DB (page doesn't created)
     result = Results(user=user, theme=theme, test=test, sum_points=total_points)
     result.save()
 
