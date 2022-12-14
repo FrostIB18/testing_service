@@ -1,0 +1,22 @@
+{% extends 'testing/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8">
+            <h2>Результаты</h2>
+            <hr>
+            <h3>Тема: {{ theme }}</h3>
+            <h4>Тест: {{ test }}</h4>
+            <br>
+            <br>
+            <br>
+            <div class="text-center">
+                <h1 class="text-center">Поздравляем!</h1><br>
+                <h3>Вы набрали: {{total_points}}/{{max_points}}
+                    <br><br>{{total_points_percent}}/{{max_points_percent}} %</h3>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

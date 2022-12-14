@@ -1,0 +1,50 @@
+{% extends 'testing/base.html' %}
+
+{% block content %}
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <h2 class="text-center">Регистрация</h2>
+            {% if form.errors %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert"
+                    style="margin-top: 20px;">
+                    {{form.errors}}
+                    <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
+            <div>
+                <form action="{% url 'signup' %}" method = 'post'>
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="username">Логин</label>
+                        <input type="text" name="username" class="form-control" id="username" aria-describedby="usernameHelp">
+                        <small id="usernameHelp" class="form-text text-muted">Ваш логин должен быть уникальным. Мы сообщим, если он уже занят.</small>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px;">
+                        <label for="password1">Пароль</label>
+                        <input type="password" name="password1" class="form-control" id="password1">
+                    </div>
+                    <div class="form-group" style="margin-top: 10px;">
+                        <label for="password2">Повторите пароль</label>
+                        <input type="password" name="password2" class="form-control" id="password2">
+                    </div>
+                    <br>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-lg btn-secondary">Зарегистрироваться</button>
+                        <br><hr>
+                        <button class="btn btn-link fs-6" type="button">
+                        <a href="{% url 'login' %}">Уже есть аккаунт? Войти!</a></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

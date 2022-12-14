@@ -1,0 +1,20 @@
+{% extends 'testing/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8">
+            {% if themes %}
+                <h2>Выберите тему</h2>
+                <hr>
+                {% for theme in themes %}
+                    <h4><a href="{% url 'testing:tests' theme.id %}">{{ theme.title }}</a></h4>
+                    <p class="fs-5">{{ theme.description }}</p>
+                {% endfor %}
+            {% else %}
+                <p>Кажется, темы на данный момент отсутствуют:(</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
