@@ -18,7 +18,7 @@
             По окончанию тестов будет выведен результат.</p>
         <br>
 
-        <button id="go-test" type="button" class="btn btn-lg btn-secondary">
+        <button id="go-test" type="button" class="btn btn-lg btn-success">
             {% if user.is_authenticated %}
                 <a id="go-test-link" class="text-white text-decoration-none text-reset" href="{% url 'testing:themes' %}">
                     Перейти к выбору тем</a>

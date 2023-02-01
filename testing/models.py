@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+
 # Create your models here.
 class Theme(models.Model):
     title = models.CharField(max_length=300)
@@ -9,12 +10,14 @@ class Theme(models.Model):
     def __str__(self):
         return self.title
 
+
 class Test_single(models.Model):
     title = models.CharField(max_length=350)
     theme = models.ForeignKey(Theme, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
+
 
 class Question(models.Model):
     title = models.CharField(max_length=1000)
@@ -24,6 +27,7 @@ class Question(models.Model):
     def __str__(self):
         return self.title
 
+
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     title = models.CharField(max_length=1000)
@@ -31,6 +35,7 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.title
+
 
 class Answer(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -42,6 +47,7 @@ class Answer(models.Model):
 
     def __str__(self):
         return f'{self.user} | {self.question}'
+
 
 class Results(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

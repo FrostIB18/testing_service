@@ -41,7 +41,7 @@
                     {% endfor %}
                     <br>
                     <div class="text-center">
-                        <input type="submit" value="Отправить" class='btn btn-secondary' id="ob_submit">
+                        <input type="submit" value="Отправить" class='btn btn-success' id="ob_submit">
                     </div>
                 {% else %}
                     {% for choice in choices %}
@@ -57,7 +57,7 @@
                         {% else %}
                         <div class="row">
                             <div class="col-md-1 text-center">
-                                <input type="checkbox" name="choice" class="form-check-input fs-4" style="margin-top: 12px;" value="{{choice.id}}">
+                                <input type="checkbox" name="choice" class="form-check-input fs-4" style="margin-top: 12px; " value="{{choice.id}}">
                             </div>
                             <div class="col p-0">
                                 <label class="form-check-label fs-4" for="choice" style="margin-top: 5px;">{{choice}}</label><br>
@@ -67,7 +67,7 @@
                     {% endfor %}
                     <br>
                     <div class="text-center">
-                        <button class='btn btn-secondary' disabled="disabled" type="submit">Отправить</button>
+                        <button class='btn btn-success' disabled="disabled" type="submit">Отправить</button>
                     </div>
                 {% endif %}
             </form>
@@ -100,7 +100,7 @@
 
             {% if not questions_pag.has_next and not error and answers %}
             <div class="text-center">
-                <a href="{% url 'testing:results' theme.id test.id %}"><button class="btn btn-lg btn-primary">Завершить тест</button></a>
+                <a href="{% url 'testing:results' theme.id test.id %}"><button class="btn btn-lg btn-success">Завершить тест</button></a>
             </div>
             {% endif %}
 

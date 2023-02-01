@@ -11,12 +11,12 @@ A web application that is used for taking tests on different themes.
 2. pip install -r requirments.txt <br>
 
 
-4. python manage.py migrate <br>
+3. python manage.py migrate <br>
 
 
-3. python manage.py loaddata testing/fixtures/db.json <br>
+4. python manage.py loaddata testing/fixtures/db.json <br>
 
 
-4. python manage.py runserver <br>
+5python manage.py runserver <br>
 
 Check local IP adress
